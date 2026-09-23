@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="simulation-version" content="2026-09-23-v3">
 <title>Mô phỏng cây cam – Nhân tố ngoại cảnh</title>
 <style>
 *{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#eef7f1;color:#18342a}.app{min-height:100vh;background:linear-gradient(135deg,#edf8f1,#f8fbf6)}
@@ -20,7 +20,7 @@ button{border:0;border-radius:12px;padding:10px 15px;font-weight:700;cursor:poin
 </style>
 </head>
 <body><div class="app">
-<header><div><h1>🌿 PHÒNG THÍ NGHIỆM CÂY CAM</h1><p>Điều chỉnh từng nhân tố ngoại cảnh và quan sát trực tiếp cây thay đổi như thế nào</p></div><button class="reset" onclick="resetAll()">↻ Đặt lại</button></header>
+<header><div><h1>🌿 PHÒNG THÍ NGHIỆM CÂY CAM</h1><p>Điều chỉnh từng nhân tố ngoại cảnh và quan sát trực tiếp cây thay đổi như thế nào <b style="font-size:11px;color:#2f8051">• v3 – GIẢI THÍCH THEO BIỂU HIỆN</b></p></div><button class="reset" onclick="resetAll()">↻ Đặt lại</button></header>
 <div class="layout">
 <aside class="card sidebar"><h3>CHỌN NHÂN TỐ</h3><div id="factors"></div><div class="legend"><span class="dot g"></span>Thuận lợi &nbsp; <span class="dot y"></span>Thiếu &nbsp; <span class="dot r"></span>Quá mức</div></aside>
 
@@ -83,12 +83,12 @@ function score(d,p){if(p>=d.opt[0]&&p<=d.opt[1])return 100;let edge=p<d.opt[0]?d
 function applyMorph(d,p,s,v){
  const good=p>=d.opt[0]&&p<=d.opt[1];
  const canopy=document.getElementById('canopy'), leaves=document.getElementById('leaves'), leafClusters=document.getElementById('leafClusters'), fruits=document.getElementById('fruits'), flowers=document.getElementById('flowers'), roots=document.getElementById('rootZone'), damage=document.getElementById('damageLeaves'), drops=document.getElementById('waterDrops'), soil=document.getElementById('soilWater'), trunk=document.getElementById('trunkGroup'), svg=document.querySelector('.tree-svg');
- canopy.style.transform='scale('+(0.70+s/330)+')'; canopy.style.transformOrigin='310px 330px';
- leaves.style.opacity=Math.max(.18,s/100); leafClusters.style.opacity=Math.max(.3,s/100);
- fruits.style.opacity=Math.max(.05,.18+s/125); flowers.style.opacity=Math.max(.05,.18+s/125); roots.style.opacity=Math.max(.18,.25+s/130); damage.style.opacity=good?.03:.65;
+ canopy.style.transform='scale('+(0.58+s/240)+')'; canopy.style.transformOrigin='310px 330px';
+ leaves.style.opacity=Math.max(.08,s/100); leafClusters.style.opacity=Math.max(.18,s/100);
+ fruits.style.opacity=Math.max(.02,.12+s/145); flowers.style.opacity=Math.max(.02,.12+s/145); roots.style.opacity=Math.max(.18,.25+s/130); damage.style.opacity=good?.03:.65;
  const cracks=document.getElementById('cracks'),fallLeaves=document.getElementById('fallLeaves'); let alert=''; cracks.style.opacity=0; fallLeaves.style.opacity=0;
- svg.classList.remove('wilt','uproot','flood','cold','scorch','yellow');
- if(key==='light'&&v>15000){svg.classList.add('wilt','scorch');alert='🥀 ÁNH SÁNG QUÁ CAO → CÂY HÉO';}
+ svg.classList.remove('wilt','uproot','flood','cold','scorch','yellow','lightLow');
+ if(key==='light'&&v<10000){svg.classList.add('lightLow');alert='🌿 ÁNH SÁNG THẤP → TÁN THƯA, LÁ NHỎ';}\n if(key==='light'&&v>15000){svg.classList.add('wilt','scorch');alert='🥀 ÁNH SÁNG QUÁ CAO → CÂY HÉO';}
  if(key==='temp'&&v>29){svg.classList.add('wilt','scorch');alert=v>39?'🔥 > 39°C → NGỪNG SINH TRƯỞNG':'🔥 > 29°C → STRESS NHIỆT';}
  if(key==='temp'&&v<23){svg.classList.add('cold');alert=v<12?'🥶 < 12°C → NGỪNG SINH TRƯỞNG':'🥶 < 23°C → SINH TRƯỞNG CHẬM';}
  if(key==='humid'&&v<70){svg.classList.add('wilt');cracks.style.opacity=Math.min(1,(70-v)/35);alert='🥀 ĐỘ ẨM ĐẤT < 70% → CÂY THIẾU NƯỚC';}
@@ -125,7 +125,7 @@ Object.entries(data).forEach(([k,d])=>{const b=document.createElement('button');
 slider.oninput=render;choose('light');</script>
 <style>
 @keyframes sway{from{transform:translateX(-4px) rotate(-1.5deg)}to{transform:translateX(4px) rotate(1.5deg)}}
-.tree-svg.wilt{transform:rotate(7deg) translateY(24px) scaleY(.80);transform-origin:310px 520px;transition:.35s}.tree-svg.wilt #canopy{transform:scaleY(.86) translateY(18px);transform-origin:310px 330px;filter:brightness(.78) saturate(.72)}
+.tree-svg.lightLow{transform:translateY(32px) scale(.88);filter:saturate(.65) brightness(.9)}.tree-svg.lightLow #canopy{filter:saturate(.65) brightness(.9)}.tree-svg.lightLow #flowers,.tree-svg.lightLow #fruits{opacity:.12}.tree-svg.wilt{transform:rotate(7deg) translateY(24px) scaleY(.80);transform-origin:310px 520px;transition:.35s}.tree-svg.wilt #canopy{transform:scaleY(.86) translateY(18px);transform-origin:310px 330px;filter:brightness(.78) saturate(.72)}
 .tree-svg.wilt #leaves,.tree-svg.wilt #leafClusters{transform:rotate(12deg) scaleY(.82);transform-origin:310px 330px}
 .tree-svg.scorch #leaves,.tree-svg.scorch #leafClusters{filter:sepia(1) saturate(.35) brightness(.82);opacity:.65}.tree-svg.scorch #damageLeaves{opacity:1;fill:#9b6b25}
 .tree-svg.flood #rootZone{filter:drop-shadow(0 0 4px #4aa7d0)}
