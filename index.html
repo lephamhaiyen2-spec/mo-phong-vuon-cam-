@@ -95,8 +95,7 @@ function applyMorph(d,p,s){
  if(key==='humid'&&p>75){drops.style.opacity=.9;alert='💧 ĐỘ ẨM QUÁ CAO → LÁ ƯỚT LÂU';}else drops.style.opacity=0;
  if(key==='rain'&&p<20){svg.classList.add('wilt');alert='🏜️ THIẾU NƯỚC → CÂY HÉO';}
  if(key==='rain'&&p>50){svg.classList.add('flood');soil.style.opacity=Math.min(.95,(p-50)/35);alert='🌊 MƯA QUÁ NHIỀU → ĐẤT NGẬP';}else soil.style.opacity=0;
- if(key==='wind'&&p>31){svg.style.animation='sway '+Math.max(.18,1.05-p/110)+'s ease-in-out infinite alternate';}else svg.style.animation='none';
- else svg.style.animation='none';
+ if(key==='wind'&&p>31){svg.style.animation='sway '+Math.max(.18,1.05-p/110)+'s ease-in-out infinite alternate';}else{svg.style.animation='none';}
  if(key==='wind'&&p>65){svg.classList.add('uproot');alert='🌪️ GIÓ CỰC MẠNH → CÂY BẬT GỐC';}
  else if(key==='wind'&&p>50)alert='⚠️ GIÓ RẤT MẠNH → CÀNH GÃY, LÁ RỤNG';
  if(key==='ph'&&p>50){svg.classList.add('yellow');alert='🍂 pH CAO → LÁ NON VÀNG';}
